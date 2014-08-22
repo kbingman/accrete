@@ -1,8 +1,8 @@
 /*----------------------------------------------------------------------*/
-/*                           BIBLIOGRAPHY                               */
-/*  Dole, Stephen H.  "Formation of Planetary Systems by Aggregation:   */
-/*      a Computer Simulation"  October 1969,  Rand Corporation Paper   */
-/*	P-4226.								*/
+/*                           BIBLIOGRAPHY
+/*  Dole, Stephen H.  "Formation of Planetary Systems by Aggregation:
+/*      a Computer Simulation"  October 1969,  Rand Corporation Paper
+/*  P-4226.
 /*----------------------------------------------------------------------*/
 
 /* Variables global to the accretion process */
@@ -20,9 +20,9 @@ function set_initial_conditions(inner_limit_of_dust, outer_limit_of_dust) {
     dust_head.next_band = NULL;
     dust_head.outer_edge = outer_limit_of_dust;
     dust_head.inner_edge = inner_limit_of_dust;
-    dust_head.dust_present = TRUE;
-    dust_head.gas_present = TRUE;
-    dust_left = TRUE;
+    dust_head.dust_present = true;
+    dust_head.gas_present = true;
+    dust_left = true;
     cloud_eccentricity = 0.2;
 }
 
@@ -54,7 +54,7 @@ function dust_available(inside_range, outside_range) {
     while ((current_dust_band != NULL) && (current_dust_band.outer_edge < inside_range))
     current_dust_band = current_dust_band.next_band;
     if (current_dust_band == NULL)
-    dust_here = FALSE;
+    dust_here = false;
     else
     dust_here = current_dust_band.dust_present;
     while ((current_dust_band != NULL) && (current_dust_band.inner_edge < outside_range)) {
@@ -66,26 +66,28 @@ function dust_available(inside_range, outside_range) {
 
 function update_dust_lanes(min, max, mass, crit_mass, body_inner_bound, body_outer_bound) {
     var gas;
-    var node1 = new dust_bands_record(), node2 = new dust_bands_record(), node3 = new dust_bands_record();
+    var node1 = new dust_bands_record(),
+        node2 = new dust_bands_record(),
+        node3 = new dust_bands_record();
 
-    dust_left = FALSE;
+    dust_left = false;
     if ((mass > crit_mass)) {
-    gas = FALSE;
+        gas = false;
     } else {
-    gas = TRUE;
+        gas = true;
     }
     node1 = dust_head;
-    while ((node1 != NULL)) {
-        if (((node1.inner_edge < min) && (node1.outer_edge > max))) {
+    while (node1 != NULL) {
+        if (node1.inner_edge < min && node1.outer_edge > max) {
             node2 = new dust_bands_record();
             node2.inner_edge = min;
             node2.outer_edge = max;
-            if ((node1.gas_present == TRUE)) {
+            if ((node1.gas_present === true)) {
             node2.gas_present = gas;
             } else {
-            node2.gas_present = FALSE;
+            node2.gas_present = false;
             }
-            node2.dust_present = FALSE;
+            node2.dust_present = false;
             node3 = new dust_bands_record();
             node3.inner_edge = max;
             node3.outer_edge = node1.outer_edge;
@@ -105,39 +107,39 @@ function update_dust_lanes(min, max, mass, crit_mass, body_inner_bound, body_out
             node2.inner_edge = max;
             node1.next_band = node2;
             node1.outer_edge = max;
-            if ((node1.gas_present == TRUE))
+            if ((node1.gas_present === true))
             node1.gas_present = gas;
             else
-            node1.gas_present = FALSE;
-            node1.dust_present = FALSE;
+            node1.gas_present = false;
+            node1.dust_present = false;
             node1 = node2.next_band;
         } else if (((node1.inner_edge < min) && (node1.outer_edge > min))) {
             node2 = new dust_bands_record();
             node2.next_band = node1.next_band;
-            node2.dust_present = FALSE;
-            if ((node1.gas_present == TRUE))
+            node2.dust_present = false;
+            if ((node1.gas_present === true))
             node2.gas_present = gas;
             else
-            node2.gas_present = FALSE;
+            node2.gas_present = false;
             node2.outer_edge = node1.outer_edge;
             node2.inner_edge = min;
             node1.next_band = node2;
             node1.outer_edge = min;
             node1 = node2.next_band;
         } else if (((node1.inner_edge >= min) && (node1.outer_edge <= max))) {
-            if ((node1.gas_present == TRUE)) {
-            node1.gas_present = gas;
+            if (node1.gas_present === true) {
+                node1.gas_present = gas;
             }
-            node1.dust_present = FALSE;
+            node1.dust_present = false;
             node1 = node1.next_band;
         } else if (((node1.outer_edge < min) || (node1.inner_edge > max))) {
             node1 = node1.next_band;
         }
     }
     node1 = dust_head;
-    while ((node1 != NULL)) {
+    while ((node1 !== NULL)) {
         if (((node1.dust_present) && (((node1.outer_edge >= body_inner_bound) && (node1.inner_edge <= body_outer_bound)))))
-            dust_left = TRUE;
+            dust_left = true;
         node2 = node1.next_band;
         if ((node2 != NULL)) {
             if (((node1.dust_present == node2.dust_present) && (node1.gas_present == node2.gas_present))) {
@@ -162,11 +164,11 @@ function collect_dust(last_mass, a, e, crit_mass, dust_band) {
     if ((dust_band == NULL))
     return (0.0);
     else {
-    if ((dust_band.dust_present == FALSE))
+    if ((dust_band.dust_present === false))
         temp_density = 0.0;
     else
         temp_density = dust_density;
-    if (((last_mass < crit_mass) || (dust_band.gas_present == FALSE)))
+    if (((last_mass < crit_mass) || (dust_band.gas_present === false)))
         mass_density = temp_density;
     else
         mass_density = K * temp_density / (1.0 + Math.sqrt(crit_mass / last_mass) * (K - 1.0));
@@ -210,8 +212,8 @@ function accrete_dust(seed_mass, a, e, crit_mass, body_inner_bound, body_outer_b
 
     new_mass = seed_mass.VALUE;
     do {
-    temp_mass = new_mass;
-    new_mass = collect_dust(new_mass, a, e, crit_mass, dust_head);
+        temp_mass = new_mass;
+        new_mass = collect_dust(new_mass, a, e, crit_mass, dust_head);
     } while (!(((new_mass - temp_mass) < (0.0001 * temp_mass))));
     seed_mass.VALUE = seed_mass.VALUE + new_mass;
     update_dust_lanes(r_inner, r_outer, seed_mass.VALUE, crit_mass, body_inner_bound, body_outer_bound);
@@ -224,7 +226,7 @@ function coalesce_planetesimals(a, e, mass, crit_mass, stellar_luminosity_ratio,
 
     var temp;
 
-    coalesced = FALSE;
+    coalesced = false;
     node1 = planet_head;
     node2 = NULL;
     node3 = NULL;
@@ -258,7 +260,7 @@ function coalesce_planetesimals(a, e, mass, crit_mass, stellar_luminosity_ratio,
         node1.e = e;
         node1.mass = temp.VALUE;
         node1 = NULL;
-        coalesced = TRUE;
+        coalesced = true;
     } else
         node1 = node1.next_planet;
     }
@@ -267,9 +269,9 @@ function coalesce_planetesimals(a, e, mass, crit_mass, stellar_luminosity_ratio,
     node3.a = a;
     node3.e = e;
     if ((mass >= crit_mass))
-        node3.gas_giant = TRUE;
+        node3.gas_giant = true;
     else
-        node3.gas_giant = FALSE;
+        node3.gas_giant = false;
     node3.mass = mass;
     if ((planet_head == NULL)) {
         planet_head = node3;
@@ -313,17 +315,17 @@ function distribute_planetary_masses(stellar_mass_ratio, stellar_luminosity_rati
         dust_density = DUST_DENSITY_COEFF * Math.sqrt(stellar_mass_ratio) * Math.exp(-ALPHA * Math.pow(a, (1.0 / N)));
         crit_mass = critical_limit(a, e, stellar_luminosity_ratio);
         accrete_dust(mass, a, e, crit_mass, planetesimal_inner_bound, planetesimal_outer_bound);
-        if ((mass.VALUE != 0.0) && (mass.VALUE != PROTOPLANET_MASS)) {
-        coalesce_planetesimals(a, e, mass.VALUE, crit_mass, stellar_luminosity_ratio, planetesimal_inner_bound, planetesimal_outer_bound);
+        if ((mass.VALUE !== 0.0) && (mass.VALUE != PROTOPLANET_MASS)) {
+            coalesce_planetesimals(a, e, mass.VALUE, crit_mass, stellar_luminosity_ratio, planetesimal_inner_bound, planetesimal_outer_bound);
         } else {
-        console.debug(sprintf(".. failed due to large neighbor.\n"));
+            console.debug('.. failed due to large neighbor.');
         }
     } else {
         if (VERBOSE) {
-        console.debug(sprintf(".. failed.\n"));
+            console.debug(sprintf('.. failed.'));
         }
     }
 
     }
-    return (planet_head);
+    return planet_head;
 }

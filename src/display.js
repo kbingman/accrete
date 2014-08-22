@@ -1,46 +1,46 @@
 function getSmallestMolecularWeight(m) {
     if (m < MOLECULAR_HYDROGEN)
-    return ('H2');
+        return ('H2');
     else if (m < HELIUM)
-    return ('He');
+        return ('He');
     else if (m < METHANE)
-    return ('CH4');
+        return ('CH4');
     else if (m < AMMONIA)
-    return ('NH3');
+        return ('NH3');
     else if (m < WATER_VAPOR)
-    return ('H2O');
+        return ('H2O');
     else if (m < NEON)
-    return ('Ne');
+        return ('Ne');
     else if (m < MOLECULAR_NITROGEN)
-    return ('N2');
+        return ('N2');
     else if (m < CARBON_MONOXIDE)
-    return ('CO');
+        return ('CO');
     else if (m < NITRIC_OXIDE)
-    return ('NO');
+        return ('NO');
     else if (m < MOLECULAR_OXYGEN)
-    return ('O2');
+        return ('O2');
     else if (m < HYDROGEN_SULPHIDE)
-    return ('H2S');
+        return ('H2S');
     else if (m < ARGON)
-    return ('Ar');
+        return ('Ar');
     else if (m < CARBON_DIOXIDE)
-    return ('CO2');
+        return ('CO2');
     else if (m < NITROUS_OXIDE)
-    return ('N2O');
+        return ('N2O');
     else if (m < NITROGEN_DIOXIDE)
-    return ('NO2');
+        return ('NO2');
     else if (m < OZONE)
-    return ('O3');
+        return ('O3');
     else if (m < SULPHUR_DIOXIDE)
-    return ('SO2');
+        return ('SO2');
     else if (m < SULPHUR_TRIOXIDE)
-    return ('SO3');
+        return ('SO3');
     else if (m < KRYPTON)
-    return ('Kr');
+        return ('Kr');
     else if (m < XENON)
-    return ('Xe');
+        return ('Xe');
     else
-    return ('OTHER');
+        return ('OTHER');
 }
 
 var systemToJSON = function(headPointer) {
@@ -100,7 +100,7 @@ var display_system = function() {
     console.log('r_ecosphere', r_ecosphere.toFixed(3));
     console.log('stellar_luminosity_ratio', r_ecosphere.toFixed(3));
 
-    console.log(planet_head);
+    console.log(systemToJSON(planet_head));
 
     /*
     var output = function(msg) {
