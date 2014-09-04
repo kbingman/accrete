@@ -4,30 +4,13 @@
 <meta charset="UTF-8">
 <title>Accrete</title>
 
-<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
-
-<script type="text/javascript" src="./src/constants.js"></script>
-<script type="text/javascript" src="./src/display.js"></script>
-<script type="text/javascript" src="./src/enviro.js"></script>
-<script type="text/javascript" src="./src/mtrng.js"></script>
-<script type="text/javascript" src="./src/sprintf.js"></script>
-<script type="text/javascript" src="./src/structs.js"></script>
-<script type="text/javascript" src="./src/utils.js"></script>
-<script type="text/javascript" src="./src/accrete.js"></script>
-<script type="text/javascript" src="./src/main.js"></script>
+<script type="text/javascript" src="./lib/hogan-3.0.2.js"></script>
+<script type="text/javascript" src="./lib/accrete.js"></script>
 
 <style type="text/css">
 
 </style>
 
-<script type="text/javascript">
-
-    $(document).ready(function(){
-        main();
-    });
-
-
-</script>
 </head>
 <body>
     <div id="wrapper">
@@ -45,9 +28,91 @@
             factors.
         </p>
 
-        <pre id="output">
+        <div id="output">
 
-        </pre>
+        </div>
     </div>
+
+    <script id="star" type="text/html">
+        {{# system }}
+
+            <h4>Star</h4>
+            <dl>
+            {{# star }}
+                <dt>Mass:</dt>
+                <dd>{{# round }}{{ mass }}{{/ round }}<dd>
+                <dt>Luminosity:</dt>
+                <dd>{{# round }}{{ luminosity }}{{/ round }}<dd>
+                <dt>Habital Zone:</dt>
+                <dd>{{# round }}{{ ecospherRadius }}{{/ round }}<dd>
+            {{/ star }}
+            </dl>
+
+            <h4>Planets</h4>
+
+            {{# planets }}
+            <dl>
+                <dt>Mass:</dt>
+                <dd>{{# round }}{{ mass }}{{/ round }} Earth Masses<dd>
+                <dt>Distance:</dt>
+                <dd>{{# round }}{{ distanceFromPrimaryStar }}{{/ round }} AU<dd>
+                <dt>Equatorial Radius:</dt>
+                <dd>{{# round }}{{ equatorialRadius }}{{/ round }}<dd>
+                <dt>Eccentricity:</dt>
+                <dd>{{# round }}{{ eccentricity }}{{/ round }}<dd>
+            </dl>
+            {{/ planets }}
+
+        {{/ system }}
+    </script>
+
+    <script type="text/javascript">
+
+        var generator = new System(123458);
+        var system = generator.distributePlanets();
+
+
+        var output = document.getElementById('output');
+        var template = Hogan.compile(document.getElementById('star').innerHTML);
+        var renderer = function(context) {
+            return function(text) {
+                return template.c.compile(text, template.options).render(context);
+            };
+        };
+        var manual = function(lambda) {
+            return function(text) {
+                console.log(text)
+                var render = renderer(this);
+                return lambda.call(this, text, render);
+            };
+        };
+
+        var context = {
+            system: system,
+            round: function(){
+                return function(text){
+                    var render = renderer(this);
+                    var value = parseFloat(render(text)).toFixed(3);
+                    return value;
+                }
+            },
+            percent: function(){
+                return function(text){
+                    var render = renderer(this);
+                    var value = Math.round(parseFloat(render(text)) * 100);
+                    return value;
+                }
+            },
+            round1: manual(function(text, render) {
+                console.log(render(text))
+                return parseFloat(render(text)).toFixed(3);
+            })
+        }
+
+        output.innerHTML = template.render(context);
+
+    </script>
+
+
 </body>
 </html>

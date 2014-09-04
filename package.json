@@ -1,0 +1,22 @@
+{
+  "name": "accrete",
+  "version": "0.0.0",
+  "description": "accrete =======",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/calebrob6/accrete.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/calebrob6/accrete/issues"
+  },
+  "homepage": "https://github.com/calebrob6/accrete",
+  "dependencies": {
+    "hogan": "^1.0.2"
+  }
+}

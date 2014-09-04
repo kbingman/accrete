@@ -4,7 +4,7 @@ var NULL = null;
 var PI = Math.PI;
 var TRUE = true;
 var FALSE = false;
-var ECCENTRICITY_COEFF = 0.077; /* Dole's was 0.077 */
+
 var PROTOPLANET_MASS = 1.0E-15; /* Units of solar masses */
 var SOLAR_MASS_IN_GRAMS = 1.989E33; /* Units of grams */
 var EARTH_MASS_IN_GRAMS = 5.977E27; /* Units of grams */
@@ -86,3 +86,6 @@ var BETA_20 = 5.71E12;
 /* covered with clouds in function cloud_fraction in file enviro.c. */
 var Q1_36 = 1.258E19; /* grams */
 var Q2_36 = 0.0698; /* 1/Kelvin */
+
+// Units
+var radians_per_rotation = 2.0 * PI;
